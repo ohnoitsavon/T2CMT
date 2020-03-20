@@ -4,9 +4,9 @@ This mod/mod tool easily allows you to add new skaters to THUG2, rather than rep
 **PLEASE NOTE: This mod will alter your THUG2 save data and game files, so make backups of both of these before installing the mod!** 
 
 ## Requirements:
-THUG2
+•	THUG2
 
-Python 3
+•	FPython 3
 
 ## Features: 
 •	Fixes blur/focus
@@ -45,6 +45,6 @@ Python 3
 7.	RUN THE GAME! - Your skater is now in the list of skaters, go to the end of the list to see your skater
 
 ## How to use a skater in story mode
-1.	Go to create-a-skater
-2.	Choose the male null or female null pre-set skater
-3.	Go to torso options and your custom model will show as a shirt option
+1.	Go to “Create-a-skater”
+2.	Choose the “Male null” or “female null” pre-set skater
+3.	Go to the torso options and your custom model will show as a shirt option
