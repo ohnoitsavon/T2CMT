@@ -46,5 +46,5 @@ This mod/mod tool easily allows you to add new skaters to THUG2, rather than rep
 
 ## How to use a skater in story mode
 1.	Go to “Create-a-skater”
-2.	Choose the “Male null” or “female null” pre-set skater
+2.	Choose the “Male null” or “Female null” pre-set skater
 3.	Go to the torso options and your custom model will show as a shirt option
