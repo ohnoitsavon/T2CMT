@@ -63,18 +63,18 @@ def checkFiles():
            casm3 =f.read()
     else:
         return False
-    if Path('T2CMT Data\skater_profile_s.txt').is_file():
-        global skp1
-        f=open("T2CMT Data\skater_profile_s.txt", "r")
+    if Path('T2CMT Data\mainmenu_Scripts_s.txt').is_file():
+        global mme1
+        f=open("T2CMT Data\mainmenu_Scripts_s.txt", "r")
         if f.mode == 'r':
-           skp1 =f.read()
+           mme1 =f.read()
     else:
         return False
-    if Path('T2CMT Data\skater_profile_e.txt').is_file():
-        global skp2
-        f=open("T2CMT Data\skater_profile_e.txt", "r")
+    if Path('T2CMT Data\mainmenu_Scripts_e.txt').is_file():
+        global mme2
+        f=open("T2CMT Data\mainmenu_Scripts_e.txt", "r")
         if f.mode == 'r':
-           skp2 =f.read()
+           mme2 =f.read()
     else:
         return False
     #endregion
@@ -91,108 +91,13 @@ def getValidString(displaymes):
     return string
     #endregion
 
-def getValidInt(displaymes, minval, maxval):
-    #region
-    error = "Error: Invalid Integer - Please try again!"
-    while True:
-        string = input(displaymes)
-        if string.strip():
-            if string.isdigit():
-                if int(string) >= minval and int(string) <= maxval:
-                    break
-                else: 
-                    print(error)   
-            else: 
-                print(error)   
-        else:
-            print(error)       
-    return string
-    #endregion
-
-def saveChrAttribute(text, info, fname, isint=0, minval=0, maxval=255):
-    #region
-    if len(info) > 0:
-        info = "("+info+") "
-    if isint == 1:
-        value = int(getValidInt("Enter \""+text+"\" "+info+"for \""+fname+"\": ",minval, maxval))
-    else:
-        value = getValidString("Enter \""+text+"\" "+info+"for \""+fname+"\": ")
-    return value
-    #endregion
-
 def createChrData(fname, data, outfile):
     #region
-    #--display_name$ = %s(4,"NAME")
-    #--first_name$ = %s(1,"A")
-    #--last_name$ = %s(1,"B")
-    #--voice$ = $female2$
-    #--stance$ = $regular$
-    #--pushstyle$ = $never_mongo$ // always_mongo // mongo_when_switch
-    #--trickstyle$ = $street$
-    #--is_male$ = %i(0,00000000)
-    #--air$ = %i(10,0000000a)
-    #--run$ = %i(10,0000000a)
-    #--ollie$ = %i(10,0000000a)
-    #--speed$ = %i(10,0000000a)
-    #--spin$ = %i(10,0000000a)
-    #--switch$ = %i(10,0000000a)
-    #--flip_speed$ = %i(10,0000000a)
-    #--rail_balance$ = %i(10,0000000a)
-    #--lip_balance$ = %i(10,0000000a)
-    #--manual_balance$ = %i(10,0000000a)    
-
-    class Attribute:
-        def __init__(self, name, text, info, isint, minval, maxval):
-            self.name = name
-            self.text = text
-            self.info = info
-            self.isint = isint
-            self.minval = minval
-            self.maxval = maxval
     
-    catts = [
-        Attribute("display_name","Display Name","",0,0,0),
-        Attribute("first_name","First Name","",0,0,0),
-        Attribute("last_name","Last Name","",0,0,0),
-        Attribute("is_male","Gender","Male = 1, Female = 2",1,1,2),
-        Attribute("voice","Voice","Male 1-4 = 1-4, Female 1-2 = 5-6",1,1,6),   
-        Attribute("stance","Stance","Regular = 1, Goofy = 2",1,1,2),
-        Attribute("pushstyle","Push Style","Never Mongo = 1, Mongo Switch = 2, Always Mongo = 3",1,1,3),        
-        Attribute("trickstyle","Trick Style","Street = 1, Vert = 2",1,1,2)
-    ]
-
-    cstats = [
-        Attribute("air","Air Stat Value","1-10",1,1,10),
-        Attribute("run","Run Stat Value","1-10",1,1,10),
-        Attribute("ollie","Ollie Stat Value","1-10",1,1,10),
-        Attribute("speed","Speed Stat Value","1-10",1,1,10),
-        Attribute("spin","Spin Stat Value","1-10",1,1,10),
-        Attribute("switch","Switch Stat Value","1-10",1,1,10),
-        Attribute("flip_speed","Flip Speed Stat Value","1-10",1,1,10),
-        Attribute("rail_balance","Rail Balance Stat Value","1-10",1,1,10),
-        Attribute("lip_balance","Lip Balance Stat Value","1-10",1,1,10),
-        Attribute("manual_balance","Manual Balance Stat Value","1-10",1,1,10),
-    ]
-
-    for c in catts:
-        if data.get(c.name):
-            print(fname + " "+c.text+": " +str(data[c.name]))
-        else:
-            data[c.name] = saveChrAttribute(c.text, c.info, fname, c.isint, c.minval, c.maxval)
-    
-    if not data.get("all_stats"):
-        data["all_stats"] = saveChrAttribute("Global Stats Value", "1-10 - Enter 0 to edit individual stats", fname, 1, 0, 10)
-        if data["all_stats"] == 0:
-            data["all_stats"] = "-"
-
-    if data["all_stats"] != "-":
-        print(fname + " Global Stats Value: " +str(data["all_stats"]))
+    if data.get("display_name"):
+        print(fname + " Display Name: " +str(data["display_name"]))
     else:
-        for s in cstats:
-            if data.get(s.name):
-                print(fname + " "+s.text+": " +str(data[s.name]))
-            else:
-                data[s.name] = saveChrAttribute(s.text, s.info, fname, s.isint, s.minval, s.maxval) 
+        data["display_name"] = getValidString("Enter \"Display Name\" for \""+fname+"\": ")
 
     outfile.seek(0)
     outfile.truncate(0)
@@ -243,7 +148,15 @@ def getAllChrs():
     global casm1
     global casm2
     global casf1
-    global skp1
+    global mme1
+
+    ddlcstr =           "\n:i :s{$struct$ = $MOD_DDLC_Monika$$name$ = %s(6,\"Monika\")$female$ = %i(1,00000001)$voice$ = $female2$:s}"
+    ddlcstr = ddlcstr + "\n:i :s{$struct$ = $MOD_DDLC_Natsuki$$name$ = %s(7,\"Natsuki\")$female$ = %i(1,00000001)$voice$ = $female2$:s}"
+    ddlcstr = ddlcstr + "\n:i :s{$struct$ = $MOD_DDLC_Sayori$$name$ = %s(6,\"Sayori\")$female$ = %i(1,00000001)$voice$ = $female2$:s}"
+    ddlcstr = ddlcstr + "\n:i :s{$struct$ = $MOD_DDLC_Yuri$$name$ = %s(4,\"Yuri\")$female$ = %i(1,00000001)$voice$ = $female2$:s}\n"
+
+    casm0 = casm0.replace("$$$DDLC$$$", ddlcstr)
+
     i = 0
     #checks for all skin files
     fpath = Path('Data\models\\ab_mod\mods')
@@ -267,122 +180,19 @@ def getAllChrs():
                     casm2 = casm2 + modtext
                     casf1  = casf1  + modtext
 
-                    pft =       "\n:i :s{\n:i $display_name$ = %s("+str(len(chrdata['display_name']))+",\""+chrdata['display_name']+"\")\n"
-                    pft = pft + ":i $first_name$ = %s("+str(len(chrdata['first_name']))+",\""+chrdata['first_name']+"\")\n"
-                    pft = pft + ":i $last_name$ = %s("+str(len(chrdata['last_name']))+",\""+chrdata['last_name']+"\")\n"
-                    pft = pft + ":i $default_appearance$ = $appearance_MOD_"+str(i)+"$\n"
-                    pft = pft + ":i $name$ = $MOD_"+str(i)+"$\n"
-
-
-                    if chrdata["stance"] == 1:
-                        stance = "regular"
-                    else:
-                        stance = "goofy"
-
-                    pft = pft + ":i $stance$ = $"+stance+"$\n"
-
-                    if chrdata["pushstyle"] == 1:
-                        pushstyle = "never_mongo"
-                    elif chrdata["stance"] == 2:
-                        pushstyle = "mongo_when_switch"
-                    else:
-                        pushstyle = "always_mongo"
-
-                    pft = pft + ":i $pushstyle$ = $"+pushstyle+"$\n"
-
-                    if chrdata["trickstyle"] == 1:
-                        trickstyle = "street"
-                    else:
-                        trickstyle = "vert"
-
-                    pft = pft + ":i $trickstyle$ = $"+trickstyle+"$\n"
-
-
-                    pft = pft + ":i $tag_texture$ = %s(12,\"tags\cas_01\")\n"
-                    pft = pft + ":i $skater_family$ = $family_custom$\n"
-                    pft = pft + ":i $is_pro$ = %i(0,00000000)\n"
-                    pft = pft + ":i $is_head_locked$ = %i(0,00000000)\n"
-                    pft = pft + ":i $is_locked$ = %i(0,00000000)\n"
-                    pft = pft + ":i $is_hidden$ = %i(0,00000000)\n"
-
-                    if chrdata["is_male"] == 2:
-                        is_m =  0
-                    else:
-                        is_m = 1
-                    tohex = "{0:0{1}x}".format(is_m,8)
-                    pft = pft + ":i $is_male$ = %i("+str(is_m)+","+str(tohex)+")\n"
-
-                    pft = pft + ":i $points_available$ = %i(0,00000000)\n"
-
-                    if chrdata["all_stats"] == "-":
-                        tohex = "{0:0{1}x}".format(chrdata["air"],8) 
-                        pft = pft + ":i $air$ = %i("+str(chrdata["air"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["run"],8) 
-                        pft = pft + ":i $run$ = %i("+str(chrdata["run"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["ollie"],8) 
-                        pft = pft + ":i $ollie$ = %i("+str(chrdata["ollie"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["speed"],8) 
-                        pft = pft + ":i $speed$ = %i("+str(chrdata["speed"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["spin"],8) 
-                        pft = pft + ":i $spin$ = %i("+str(chrdata["spin"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["switch"],8) 
-                        pft = pft + ":i $switch$ = %i("+str(chrdata["switch"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["flip_speed"],8) 
-                        pft = pft + ":i $flip_speed$ = %i("+str(chrdata["flip_speed"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["rail_balance"],8) 
-                        pft = pft + ":i $rail_balance$ = %i("+str(chrdata["rail_balance"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["lip_balance"],8) 
-                        pft = pft + ":i $lip_balance$ = %i("+str(chrdata["lip_balance"])+","+str(tohex)+")\n"
-                        tohex = "{0:0{1}x}".format(chrdata["manual_balance"],8) 
-                        pft = pft + ":i $manual_balance$ = %i("+str(chrdata["manual_balance"])+","+str(tohex)+")\n"
-                    else:
-                        tohex = "{0:0{1}x}".format(chrdata["all_stats"],8) 
-                        pft = pft + ":i $air$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $run$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $ollie$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $speed$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $spin$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $switch$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $flip_speed$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $rail_balance$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $lip_balance$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-                        pft = pft + ":i $manual_balance$ = %i("+str(chrdata["all_stats"])+","+str(tohex)+")\n"
-
-                    pft = pft + ":i $sponsors$ = :a{:a}\n"
-                    pft = pft + ":i $trick_mapping$ = :s{:s}\n"
-                    pft = pft + ":i $default_trick_mapping$ = $CustomTricks$\n"
-                    pft = pft + ":i $max_specials$ = %i(12,0000000c)\n"
-                    pft = pft + ":i $specials$ = :s{\n"
-                    pft = pft + ":i :a{\n"
-                    pft = pft + ":i :s{$trickslot$ = $SpAir_R_D_Circle$$trickname$ = $Trick_McTwist$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $SpAir_U_R_Square$$trickname$ = $Trick_KickFlipUnderFlip$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $SpGrind_R_D_Triangle$$trickname$ = $Trick_tailblockslide$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $SpMan_D_U_Triangle$$trickname$ = $Trick_OneFootOneWheel$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :s{$trickslot$ = $Unassigned$$trickname$ = $Unassigned$:s}\n"
-                    pft = pft + ":i :a}\n"
-                    pft = pft + ":i :s}\n"
-
-                    if chrdata["voice"] >= 5:
-                        voice = "female" + str(chrdata["voice"]-4)
-                    else:
-                        voice = "male" + str(chrdata["voice"])
+                    mme1 = mme1 + "\n:i :s{\n:i $display_name$ = %s("+str(len(chrdata['display_name']))+",\""+chrdata['display_name']+"\")\n:i $ped_appearance_structure$ = $appearance_MOD_"+str(i)+"$\n:i $ped_group_flag$ = $LEVEL_UNLOCKED_BO$\n:i $tag_texture$ = %s(11,\"tags\cas_01\")\n:i :s}"
                     
-                    pft = pft + ":i $voice$ = $"+voice+"$\n"
-
-                    pft = pft + ":i :s}"
-                    skp1 = skp1 + pft
                     i = i + 1
                 else:
                     return False
             else:
                 print("Error: No tex file found for '"+fname+"' - skipping file...")
+
+    mme1 = mme1 + "\n:i :s{\n:i $display_name$ = %s(6,\"Monika\")\n:i $ped_appearance_structure$ = $MOD_DDLC_Monika$\n:i $ped_group_flag$ = $LEVEL_UNLOCKED_BO$\n:i $tag_texture$ = %s(11,\"tags\cas_01\")\n:i :s}"
+    mme1 = mme1 + "\n:i :s{\n:i $display_name$ = %s(7,\"Natsuki\")\n:i $ped_appearance_structure$ = $MOD_DDLC_Natsuki$\n:i $ped_group_flag$ = $LEVEL_UNLOCKED_BO$\n:i $tag_texture$ = %s(11,\"tags\cas_01\")\n:i :s}"
+    mme1 = mme1 + "\n:i :s{\n:i $display_name$ = %s(6,\"Sayori\")\n:i $ped_appearance_structure$ = $MOD_DDLC_Sayori$\n:i $ped_group_flag$ = $LEVEL_UNLOCKED_BO$\n:i $tag_texture$ = %s(11,\"tags\cas_01\")\n:i :s}"
+    mme1 = mme1 + "\n:i :s{\n:i $display_name$ = %s(4,\"Yuri\")\n:i $ped_appearance_structure$ = $MOD_DDLC_Yuri$\n:i $ped_group_flag$ = $LEVEL_UNLOCKED_BO$\n:i $tag_texture$ = %s(11,\"tags\cas_01\")\n:i :s}"
+
     print("All characters loaded successfully!\n")
     return True
     #endregion
@@ -407,19 +217,19 @@ def startGetFiles():
         p = Popen(["T2CMT Data\\roq.exe", "-c","T2CMT Data\cas_skater_f"])
         p.wait()
         
-        global skp
-        skp = skp1 + "\n" + skp2
-        f= open("T2CMT Data\skater_profile","w+")
-        f.write(skp)
+        global mme
+        mme = mme1 + "\n" + mme2
+        f= open("T2CMT Data\mainmenu_Scripts","w+")
+        f.write(mme)
         f.close()
-        p = Popen(["T2CMT Data\\roq.exe", "-c","T2CMT Data\skater_profile"])
+        p = Popen(["T2CMT Data\\roq.exe", "-c","T2CMT Data\mainmenu_Scripts"])
         p.wait()
         
         print("Compiling complete!\n")
 
         print("Copying files... ", end='')
-        if Path('T2CMT Data\skater_profile.qb').is_file():
-            shutil.copy2(Path('T2CMT Data\skater_profile.qb'), Path('Data\scripts\game\skater\skater_profile.qb'))
+        if Path('T2CMT Data\mainmenu_Scripts.qb').is_file():
+            shutil.copy2(Path('T2CMT Data\mainmenu_Scripts.qb'), Path('Data\levels\mainmenu\mainmenu_Scripts.qb'))
         if Path('T2CMT Data\cas_skater_f.qb').is_file():
             shutil.copy2(Path('T2CMT Data\cas_skater_f.qb'), Path('Data\scripts\game\cas_skater_f.qb'))
         if Path('T2CMT Data\cas_skater_m.qb').is_file():
@@ -455,9 +265,9 @@ casm3 = ""
 casf  = ""
 casf1 = ""
 casf2 = ""
-skp   = ""
-skp1  = ""
-skp2  = ""
+mme   = ""
+mme1  = ""
+mme2  = ""
 check = checkFiles()
 if check == False:
     print ("Welcome to the THUG2 Character Mod Tool\n\nPlease copy the contents of the T2CMT folder to your THUG2 directory then restart the program.\n")
