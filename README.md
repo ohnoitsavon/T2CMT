@@ -1,5 +1,5 @@
 # THUG2 Character Mod Tool 
-This mod/mod tool easily allows you to add new skaters to THUG2, rather than replacing them. It allows you to change the skaters name, sex, voice, push, stance and stats, and it allows you to use the skater model as your CAS. The mod also contains some special CAS items along with some fixes to the game.
+This mod/mod tool easily allows you to add new skaters to THUG2, rather than replacing them. It allows you to use the skater model as your CAS. The mod also contains some special CAS items along with some fixes to the game.
 
 **PLEASE NOTE: This mod will alter your THUG2 save data and game files, so make backups of both of these before installing the mod!** 
 
@@ -23,7 +23,7 @@ This mod/mod tool easily allows you to add new skaters to THUG2, rather than rep
 
 •	Null male & female CAS pre-set skaters
 
-•	Allows the addition of new custom skaters with customisable: names, stance, push, stats, sex and vocie.
+•	Allows the addition of new custom skaters
 
 •	Adds any new custom skaters as CAS items
 
@@ -42,7 +42,7 @@ This mod/mod tool easily allows you to add new skaters to THUG2, rather than rep
 4.	Go back to the script window then press any key to continue
 5.	Follow the prompts to enter your new skater’s info
 6.	Press enter to exit the installer
-7.	RUN THE GAME! - Your skater is now in the list of skaters, go to the end of the list to see your skater
+7.	RUN THE GAME! - Your skater is now in the list of secret skaters!
 
 ## How to use a skater in story mode
 1.	Go to “Create-a-skater”
